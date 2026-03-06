@@ -1,0 +1,32 @@
+module CustomId
+  VERSION: String
+
+  class Error < StandardError
+  end
+
+  module Concern
+    module ClassMethods
+      def cid: (String | Symbol prefix, ?size: Integer, ?related: Hash[Symbol, Integer], ?name: Symbol) -> void
+    end
+  end
+
+  class Installer
+    INITIALIZER_PATH: Pathname
+    INITIALIZER_CONTENT: String
+
+    def self.install!: (Pathname | String rails_root) -> (:created | :skipped)
+    def self.uninstall!: (Pathname | String rails_root) -> (:removed | :skipped)
+  end
+
+  module DbExtension
+    SUPPORTED_ADAPTERS: Array[String]
+    GENERATE_FUNCTION_SQL: String
+    DROP_GENERATE_FUNCTION_SQL: String
+
+    def self.supported?: (untyped connection) -> bool
+    def self.install_generate_function!: (untyped connection) -> void
+    def self.uninstall_generate_function!: (untyped connection) -> void
+    def self.install_trigger!: (untyped connection, String | Symbol table_name, prefix: String, ?column: Symbol | String, ?size: Integer) -> void
+    def self.uninstall_trigger!: (untyped connection, String | Symbol table_name, ?column: Symbol | String) -> void
+  end
+end

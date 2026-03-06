@@ -1,0 +1,43 @@
+AllCops:
+  TargetRubyVersion: 3.2
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - "bin/**/*"
+    - "sig/**/*"
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
+# The rake task file defines a top-level constant outside a class – intentional.
+Lint/ConstantDefinitionInBlock:
+  Exclude:
+    - "lib/tasks/*.rake"
+
+# Test files routinely define helper modules alongside the test class.
+Style/OneClassPerFile:
+  Exclude:
+    - "test/**/*_test.rb"
+
+# Metrics are relaxed in test files (long setups, many assertions) and in
+# db_extension which builds multi-line SQL strings in private helpers.
+Metrics/ClassLength:
+  Exclude:
+    - "test/**/*_test.rb"
+
+Metrics/MethodLength:
+  Max: 15
+  Exclude:
+    - "test/**/*_test.rb"
+
+# Rake task files and gemspecs use large blocks by nature.
+Metrics/BlockLength:
+  Exclude:
+    - "lib/tasks/*.rake"
+    - "*.gemspec"
+
+Metrics/ModuleLength:
+  Max: 250
