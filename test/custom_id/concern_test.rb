@@ -47,28 +47,33 @@ module CustomId
 
     def test_generates_id_on_create
       account = CidTestModels::Account.create!(name: "Alice")
+
       refute_nil account.id
     end
 
     def test_generated_id_starts_with_prefix
       account = CidTestModels::Account.create!(name: "Alice")
+
       assert_match(/\Aacc_/, account.id)
     end
 
     def test_generated_id_random_part_has_correct_default_length
       account = CidTestModels::Account.create!(name: "Alice")
       random_part = account.id.split("_", 2).last
+
       assert_equal 16, random_part.length
     end
 
     def test_generated_ids_are_unique
       ids = Array.new(50) { CidTestModels::Account.create!(name: "test").id }
+
       assert_equal ids.uniq.length, ids.length
     end
 
     def test_does_not_overwrite_an_existing_id
       account = CidTestModels::Account.new(name: "Bob", id: "custom_preset_id")
       account.save!
+
       assert_equal "custom_preset_id", account.id
     end
 
@@ -81,6 +86,7 @@ module CustomId
         cid "acc", size: 8
       end
       record = klass.create!(name: "Small")
+
       assert_equal 8, record.id.split("_", 2).last.length
     end
 
@@ -88,6 +94,7 @@ module CustomId
 
     def test_custom_column_generates_slug
       article = CidTestModels::Article.create!(name: "Hello World")
+
       refute_nil article.slug
       assert_match(/\Aart_/, article.slug)
     end
@@ -95,17 +102,20 @@ module CustomId
     def test_custom_column_random_part_has_correct_length
       article = CidTestModels::Article.create!(name: "Hello World")
       random_part = article.slug.split("_", 2).last
+
       assert_equal 10, random_part.length
     end
 
     def test_custom_column_integer_pk_is_auto_assigned_by_db
       article = CidTestModels::Article.create!(name: "Hello")
-      assert article.id.is_a?(Integer), "Expected integer pk, got #{article.id.inspect}"
+
+      assert_kind_of Integer, article.id, "Expected integer pk, got #{article.id.inspect}"
     end
 
     def test_custom_column_does_not_overwrite_pre_set_value
       article = CidTestModels::Article.new(name: "Hello", slug: "art_preset")
       article.save!
+
       assert_equal "art_preset", article.slug
     end
 
@@ -116,21 +126,24 @@ module CustomId
       shared  = account.id.split("_", 2).last.first(8)
 
       entry = CidTestModels::Entry.create!(name: "Doc", account: account)
+
       assert_match(/\Aent_/, entry.id)
-      assert entry.id.include?(shared),
-             "Expected #{entry.id.inspect} to include shared prefix #{shared.inspect}"
+      assert_includes entry.id, shared,
+                      "Expected #{entry.id.inspect} to include shared prefix #{shared.inspect}"
     end
 
     def test_related_id_total_random_length_is_correct
       account = CidTestModels::Account.create!(name: "Workspace")
       entry   = CidTestModels::Entry.create!(name: "Doc", account: account)
       random_part = entry.id.split("_", 2).last
+
       assert_equal 24, random_part.length
     end
 
     def test_related_id_without_parent_generates_random_only
       # When account_id is nil the shared portion falls back to ""
       entry = CidTestModels::Entry.create!(name: "Orphan")
+
       assert_match(/\Aent_/, entry.id)
       assert_equal 24, entry.id.split("_", 2).last.length
     end

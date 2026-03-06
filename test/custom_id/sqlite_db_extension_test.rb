@@ -24,11 +24,13 @@ module CustomId
 
       @connection.execute("INSERT INTO users (name) VALUES ('Charlie')")
       user = @connection.select_one("SELECT * FROM users WHERE name = 'Charlie'")
+
       assert_match(%r{^usr_[1-9A-HJ-NP-Za-km-z]{8}$}, user["custom_id"]) # rubocop:disable Style/RegexpLiteral
 
       # Test with explicit ID (should not be overwritten)
       @connection.execute("INSERT INTO users (custom_id, name) VALUES ('explicit_1', 'Delta')")
       user = @connection.select_one("SELECT * FROM users WHERE name = 'Delta'")
+
       assert_equal "explicit_1", user["custom_id"]
     end
 
@@ -38,6 +40,7 @@ module CustomId
 
       @connection.execute("INSERT INTO users (name) VALUES ('Echo')")
       user = @connection.select_one("SELECT * FROM users WHERE name = 'Echo'")
+
       assert_nil user["custom_id"]
     end
   end
