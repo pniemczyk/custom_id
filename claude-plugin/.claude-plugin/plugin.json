@@ -1,0 +1,7 @@
+{
+  "name": "custom-id",
+  "version": "1.0.0",
+  "description": "Claude Code skill for the custom_id gem — prefixed, Base58, Stripe-style string IDs for ActiveRecord models.",
+  "author": "Pawel Niemczyk",
+  "homepage": "https://github.com/pniemczyk/custom_id"
+}

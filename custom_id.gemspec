@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name    = "custom_id"
   spec.version = CustomId::VERSION
   spec.authors = ["Pawel Niemczyk"]
-  spec.email   = ["pawel@way2do.it"]
+  spec.email   = ["pniemczyk.info@gmail.com"]
 
   spec.summary     = "Prefixed, Stripe-style custom IDs for ActiveRecord models"
   spec.description = <<~DESC

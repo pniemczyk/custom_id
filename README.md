@@ -223,6 +223,35 @@ rails "custom_id:db:remove_trigger[users,,postgres]"          # multi-database
 >        or add enable_extension "pgcrypto" to a migration.
 > ```
 
+## Claude Code Skill
+
+A Claude Code skill is bundled at `claude-plugin/custom-id.skill`. It teaches
+Claude how to install and use this gem inside any Rails project.
+
+### What the skill covers
+
+- `cid` macro signature and all options (`prefix`, `size`, `name:`, `related:`)
+- Migration requirements (`id: :string`, no `default:`)
+- Parent-embedded IDs with `related:`
+- Database trigger alternative for PostgreSQL, MySQL, and SQLite
+- MySQL string PK gotcha and the required `cid` + trigger pairing
+- Minitest patterns for models that use `cid`
+
+### Installing the skill
+
+```bash
+# Option A — project-level plugin
+cp -r claude-plugin /your/project/.claude-plugins/custom-id
+
+# Option B — global install
+mkdir -p ~/.claude/plugins/custom-id
+cp -r claude-plugin/* ~/.claude/plugins/custom-id/
+```
+
+Once installed, Claude activates the skill automatically when you ask things
+like *"add custom_id to this project"*, *"generate Stripe-style prefixed IDs"*,
+or *"add the `cid` macro to my model"*.
+
 ## Development
 
 ```bash
